@@ -1,4 +1,4 @@
-# Menu-Page
+# MealDeck
 
 ## Educational Purpose
 
@@ -17,7 +17,13 @@ The application will open automatically at `http://localhost:3000`
 
 ## Description
 
-I made a web page that allows you to see a food menu. This menu has different buttons and depending on which button we touch it will bring us that type of food. If we tap on All, it will bring up all the meals again.
+**MealDeck** is a client-side meal menu web application built entirely with Vanilla TypeScript — no frameworks, no runtime dependencies. It presents a curated catalog of meals organized into three categories: **Breakfasts**, **Lunches**, and **Shakes**.
+
+Users can browse the full menu or narrow it down by selecting a category filter. Clicking a filter button instantly updates the displayed meal cards to show only items from that category. Selecting **All** restores the complete menu. The active filter state is managed through a custom observable `Store` implementation, meaning the UI reactively re-renders on state changes without any virtual DOM or external state management library.
+
+Each meal is displayed as a card containing the dish name, a description, and any relevant details — giving users a clear overview of what is available before making a choice. The interface is fully responsive, styled with TailwindCSS using a warm, food-friendly color palette.
+
+The application is designed as a single-page experience: fast to load, lightweight to run, and straightforward to navigate. It demonstrates how a reactive, component-driven UI can be built using pure TypeScript and native DOM APIs, making it a practical reference for developers exploring framework-free frontend architecture.
 
 ## Technologies used
 
@@ -63,11 +69,7 @@ No production dependencies - Pure Vanilla TypeScript
 
 ## Portfolio Link
 
-[`https://www.diegolibonati.com.ar/#/project/101`](https://www.diegolibonati.com.ar/#/project/101)
-
-## Video
-
-https://github.com/DiegoLibonati/Menu-Page/assets/99032604/78f2dd9c-d02a-41ee-9a31-a496b0ba8de7
+[`https://www.diegolibonati.com.ar/#/project/meal-deck`](https://www.diegolibonati.com.ar/#/project/meal-deck)
 
 ## Testing
 

@@ -5,7 +5,7 @@ import CardMeal from "@/components/CardMeal/CardMeal";
 
 import { mealStore } from "@/stores/mealStore";
 
-const MenuPage = (): Page => {
+const MealDeckPage = (): Page => {
   const main = document.createElement("main") as Page;
   main.className = "w-full h-full min-h-screen bg-primary";
 
@@ -85,4 +85,4 @@ const MenuPage = (): Page => {
   return main;
 };
 
-export default MenuPage;
+export default MealDeckPage;

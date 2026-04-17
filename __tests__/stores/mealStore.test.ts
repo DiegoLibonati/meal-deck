@@ -9,58 +9,63 @@ describe("MealStore", () => {
   let store: MealStore;
 
   beforeEach(() => {
-    store = new MealStore({
-      meals: allMeals,
-      currentFilter: "all",
+    store = new MealStore({ meals: allMeals, currentFilter: "all" });
+  });
+
+  describe("initialization", () => {
+    it("should initialize with all meals", () => {
+      expect(store.get("meals")).toEqual(allMeals);
+    });
+
+    it("should initialize with currentFilter set to 'all'", () => {
+      expect(store.get("currentFilter")).toBe("all");
     });
   });
 
-  it("should initialize with all meals", () => {
-    const state = store.getState();
+  describe("setCurrentFilter", () => {
+    it("should set meals to allMeals when filter is 'all'", () => {
+      store.setCurrentFilter("breakfast");
+      store.setCurrentFilter("all");
+      expect(store.get("meals")).toEqual(allMeals);
+      expect(store.get("currentFilter")).toBe("all");
+    });
 
-    expect(state.meals).toEqual(allMeals);
-    expect(state.currentFilter).toBe("all");
-  });
+    it("should set meals to breakfasts when filter is 'breakfast'", () => {
+      store.setCurrentFilter("breakfast");
+      expect(store.get("meals")).toEqual(breakfasts);
+      expect(store.get("currentFilter")).toBe("breakfast");
+    });
 
-  it("should filter breakfast meals", () => {
-    store.setCurrentFilter("breakfast");
+    it("should set meals to lunchs when filter is 'lunch'", () => {
+      store.setCurrentFilter("lunch");
+      expect(store.get("meals")).toEqual(lunchs);
+      expect(store.get("currentFilter")).toBe("lunch");
+    });
 
-    const state = store.getState();
-    expect(state.meals).toEqual(breakfasts);
-    expect(state.currentFilter).toBe("breakfast");
-  });
+    it("should set meals to shakes when filter is 'shakes'", () => {
+      store.setCurrentFilter("shakes");
+      expect(store.get("meals")).toEqual(shakes);
+      expect(store.get("currentFilter")).toBe("shakes");
+    });
 
-  it("should filter lunch meals", () => {
-    store.setCurrentFilter("lunch");
+    it("should notify meals subscribers when filter changes", () => {
+      const mockListener = jest.fn();
+      store.subscribe("meals", mockListener);
+      store.setCurrentFilter("breakfast");
+      expect(mockListener).toHaveBeenCalledWith(breakfasts);
+    });
 
-    const state = store.getState();
-    expect(state.meals).toEqual(lunchs);
-    expect(state.currentFilter).toBe("lunch");
-  });
+    it("should notify currentFilter subscribers when filter changes", () => {
+      const mockListener = jest.fn();
+      store.subscribe("currentFilter", mockListener);
+      store.setCurrentFilter("lunch");
+      expect(mockListener).toHaveBeenCalledWith("lunch");
+    });
 
-  it("should filter shake meals", () => {
-    store.setCurrentFilter("shakes");
-
-    const state = store.getState();
-    expect(state.meals).toEqual(shakes);
-    expect(state.currentFilter).toBe("shakes");
-  });
-
-  it("should show all meals when filter is all", () => {
-    store.setCurrentFilter("breakfast");
-    store.setCurrentFilter("all");
-
-    const state = store.getState();
-    expect(state.meals).toEqual(allMeals);
-    expect(state.currentFilter).toBe("all");
-  });
-
-  it("should notify listeners when filter changes", () => {
-    const mockListener = jest.fn();
-
-    store.subscribe("meals", mockListener);
-    store.setCurrentFilter("breakfast");
-
-    expect(mockListener).toHaveBeenCalledWith(breakfasts);
+    it("should update both meals and currentFilter in a single call", () => {
+      store.setCurrentFilter("shakes");
+      expect(store.get("meals")).toEqual(shakes);
+      expect(store.get("currentFilter")).toBe("shakes");
+    });
   });
 });

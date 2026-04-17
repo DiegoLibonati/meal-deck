@@ -1,7 +1,7 @@
 {
-  "name": "Menu",
-  "short_name": "Menu",
-  "description": "I made a web page that allows you to see a food menu. This menu has different buttons and depending on which button we touch it will bring us that type of food. If we tap on All, it will bring up all the meals again.",
+  "name": "MealDeck",
+  "short_name": "MealDeck",
+  "description": "MealDeck is a client-side meal menu web application built entirely with Vanilla TypeScript — no frameworks, no runtime dependencies.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

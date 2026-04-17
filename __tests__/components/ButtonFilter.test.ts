@@ -8,76 +8,102 @@ import ButtonFilter from "@/components/ButtonFilter/ButtonFilter";
 
 import { mealStore } from "@/stores/mealStore";
 
-const renderComponent = (props: ButtonFilterProps): ButtonFilterComponent => {
-  const container = ButtonFilter(props);
-  document.body.appendChild(container);
-  return container;
+const defaultProps: ButtonFilterProps = {
+  id: "all",
+  ariaLabel: "Show all meals",
+  text: "All",
 };
 
-describe("ButtonFilter Component", () => {
-  beforeEach(() => {
-    mealStore.setCurrentFilter("all");
-  });
+const renderComponent = (
+  props: Partial<ButtonFilterProps> = {}
+): ButtonFilterComponent => {
+  const element = ButtonFilter({ ...defaultProps, ...props });
+  document.body.appendChild(element);
+  return element;
+};
 
+describe("ButtonFilter", () => {
   afterEach(() => {
     document.body.innerHTML = "";
     mealStore.setCurrentFilter("all");
   });
 
-  const defaultProps: ButtonFilterProps = {
-    id: "breakfast",
-    ariaLabel: "Show breakfast meals",
-    text: "Breakfast",
-  };
-
-  it("should render button with correct attributes", () => {
-    renderComponent(defaultProps);
-
-    const button = screen.getByRole("button", {
-      name: "Show breakfast meals",
+  describe("rendering", () => {
+    it("should render a button element", () => {
+      renderComponent();
+      expect(screen.getByRole("button")).toBeInTheDocument();
     });
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveAttribute("id", "breakfast");
-    expect(button.textContent).toBe("Breakfast");
+
+    it("should set the id attribute to the provided filter id", () => {
+      renderComponent({ id: "breakfast" });
+      expect(screen.getByRole("button")).toHaveAttribute("id", "breakfast");
+    });
+
+    it("should set the aria-label attribute", () => {
+      renderComponent({ ariaLabel: "Show breakfast meals" });
+      expect(screen.getByRole("button")).toHaveAttribute(
+        "aria-label",
+        "Show breakfast meals"
+      );
+    });
+
+    it("should display the provided text content", () => {
+      renderComponent({ text: "Breakfast" });
+      expect(screen.getByRole("button")).toHaveTextContent("Breakfast");
+    });
   });
 
-  it("should update store filter when clicked", async () => {
-    const user = userEvent.setup();
-    renderComponent(defaultProps);
-
-    const button = screen.getByRole("button", {
-      name: "Show breakfast meals",
+  describe("behavior", () => {
+    it("should update mealStore currentFilter to 'breakfast' on click", async () => {
+      const user = userEvent.setup();
+      renderComponent({
+        id: "breakfast",
+        ariaLabel: "Show breakfast meals",
+        text: "Breakfast",
+      });
+      await user.click(screen.getByRole("button"));
+      expect(mealStore.get("currentFilter")).toBe("breakfast");
     });
-    await user.click(button);
 
-    expect(mealStore.get("currentFilter")).toBe("breakfast");
+    it("should update mealStore currentFilter to 'lunch' on click", async () => {
+      const user = userEvent.setup();
+      renderComponent({
+        id: "lunch",
+        ariaLabel: "Show lunch meals",
+        text: "Lunch",
+      });
+      await user.click(screen.getByRole("button"));
+      expect(mealStore.get("currentFilter")).toBe("lunch");
+    });
+
+    it("should update mealStore currentFilter to 'shakes' on click", async () => {
+      const user = userEvent.setup();
+      renderComponent({
+        id: "shakes",
+        ariaLabel: "Show shakes",
+        text: "Shakes",
+      });
+      await user.click(screen.getByRole("button"));
+      expect(mealStore.get("currentFilter")).toBe("shakes");
+    });
   });
 
-  it("should render different filter buttons", () => {
-    const lunchProps: ButtonFilterProps = {
-      id: "lunch",
-      ariaLabel: "Show lunch meals",
-      text: "Lunch",
-    };
-
-    renderComponent(lunchProps);
-
-    const button = screen.getByRole("button", { name: "Show lunch meals" });
-    expect(button).toBeInTheDocument();
-    expect(button.textContent).toBe("Lunch");
-  });
-
-  it("should cleanup event listener", async () => {
-    const user = userEvent.setup();
-    const button = renderComponent(defaultProps);
-
-    button.cleanup?.();
-
-    const buttonElement = screen.getByRole("button", {
-      name: "Show breakfast meals",
+  describe("cleanup", () => {
+    it("should expose a cleanup method", () => {
+      const element = renderComponent();
+      expect(typeof element.cleanup).toBe("function");
     });
-    await user.click(buttonElement);
 
-    expect(mealStore.get("currentFilter")).toBe("all");
+    it("should not update mealStore after cleanup is called", async () => {
+      const user = userEvent.setup();
+      const element = renderComponent({
+        id: "breakfast",
+        ariaLabel: "Show breakfast meals",
+        text: "Breakfast",
+      });
+      element.cleanup?.();
+      await user.click(element);
+      expect(mealStore.get("currentFilter")).toBe("all");
+    });
   });
 });
