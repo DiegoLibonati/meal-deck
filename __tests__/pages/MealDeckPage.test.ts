@@ -6,12 +6,22 @@ import type { Page } from "@/types/pages";
 import MealDeckPage from "@/pages/MealDeckPage/MealDeckPage";
 
 import { mealStore } from "@/stores/mealStore";
-import allMeals from "@/constants/meals";
-import breakfasts from "@/constants/breakfasts";
-import lunchs from "@/constants/lunchs";
-import shakes from "@/constants/shakes";
+
+import { mockMeals } from "@tests/__mocks__/meals.mock";
+import { mockBreakfasts } from "@tests/__mocks__/breakfasts.mock";
+import { mockLunchs } from "@tests/__mocks__/lunchs.mock";
+import { mockShakes } from "@tests/__mocks__/shakes.mock";
 
 let page: Page | null = null;
+
+jest.mock("@/constants/meals", () => {
+  const mockData = jest.requireActual("@tests/__mocks__/meals.mock");
+  const { mockMeals } = mockData;
+  return {
+    __esModule: true,
+    default: mockMeals,
+  };
+});
 
 const renderPage = (): Page => {
   page = MealDeckPage();
@@ -71,7 +81,7 @@ describe("MealDeckPage", () => {
     it("should render all meals on initial load", () => {
       renderPage();
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(allMeals.length);
+      expect(cards).toHaveLength(mockMeals.length);
     });
   });
 
@@ -83,7 +93,7 @@ describe("MealDeckPage", () => {
         screen.getByRole("button", { name: "Show breakfast meals" })
       );
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(breakfasts.length);
+      expect(cards).toHaveLength(mockBreakfasts.length);
     });
 
     it("should render only lunch meals when the lunch button is clicked", async () => {
@@ -93,7 +103,7 @@ describe("MealDeckPage", () => {
         screen.getByRole("button", { name: "Show lunch meals" })
       );
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(lunchs.length);
+      expect(cards).toHaveLength(mockLunchs.length);
     });
 
     it("should render only shakes when the shakes button is clicked", async () => {
@@ -101,7 +111,7 @@ describe("MealDeckPage", () => {
       renderPage();
       await user.click(screen.getByRole("button", { name: "Show shakes" }));
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(shakes.length);
+      expect(cards).toHaveLength(mockShakes.length);
     });
 
     it("should return to all meals when the all button is clicked after filtering", async () => {
@@ -112,14 +122,14 @@ describe("MealDeckPage", () => {
       );
       await user.click(screen.getByRole("button", { name: "Show all meals" }));
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(allMeals.length);
+      expect(cards).toHaveLength(mockMeals.length);
     });
 
     it("should re-render meals when mealStore state changes externally", () => {
       renderPage();
       mealStore.setCurrentFilter("breakfast");
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(breakfasts.length);
+      expect(cards).toHaveLength(mockBreakfasts.length);
     });
   });
 
@@ -134,7 +144,7 @@ describe("MealDeckPage", () => {
       element.cleanup?.();
       mealStore.setCurrentFilter("breakfast");
       const cards = document.querySelectorAll<HTMLDivElement>(".card-meal");
-      expect(cards).toHaveLength(allMeals.length);
+      expect(cards).toHaveLength(mockMeals.length);
     });
   });
 });
