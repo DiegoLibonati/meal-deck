@@ -1,4 +1,4 @@
-# MealDeck
+# Meal Deck
 
 ## Educational Purpose
 
@@ -17,7 +17,7 @@ The application will open automatically at `http://localhost:3000`
 
 ## Description
 
-**MealDeck** is a client-side meal menu web application built entirely with Vanilla TypeScript — no frameworks, no runtime dependencies. It presents a curated catalog of meals organized into three categories: **Breakfasts**, **Lunches**, and **Shakes**.
+**Meal Deck** is a client-side meal menu web application built entirely with Vanilla TypeScript — no frameworks, no runtime dependencies. It presents a curated catalog of meals organized into three categories: **Breakfasts**, **Lunches**, and **Shakes**.
 
 Users can browse the full menu or narrow it down by selecting a category filter. Clicking a filter button instantly updates the displayed meal cards to show only items from that category. Selecting **All** restores the complete menu. The active filter state is managed through a custom observable `Store` implementation, meaning the UI reactively re-renders on state changes without any virtual DOM or external state management library.
 

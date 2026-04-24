@@ -1,7 +1,7 @@
 {
-  "name": "MealDeck",
-  "short_name": "MealDeck",
-  "description": "MealDeck is a client-side meal menu web application built entirely with Vanilla TypeScript — no frameworks, no runtime dependencies.",
+  "name": "Meal Deck",
+  "short_name": "Meal Deck",
+  "description": "Meal Deck is a client-side meal menu web application built entirely with Vanilla TypeScript — no frameworks, no runtime dependencies.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
