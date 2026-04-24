@@ -35,6 +35,7 @@ describe("MealDeckPage", () => {
     document.body.innerHTML = "";
     mealStore.setCurrentFilter("all");
     page = null;
+    jest.clearAllMocks();
   });
 
   describe("rendering", () => {

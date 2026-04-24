@@ -14,13 +14,18 @@ describe("Store", () => {
     store = new TestStore({ count: 0, name: "initial" });
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe("initialization", () => {
     it("should initialize state with provided values", () => {
       expect(store.getState()).toEqual({ count: 0, name: "initial" });
     });
 
     it("should initialize listeners for each key without throwing", () => {
-      expect(() => store.subscribe("count", jest.fn())).not.toThrow();
+      const mockListener = jest.fn();
+      expect(() => store.subscribe("count", mockListener)).not.toThrow();
     });
   });
 
@@ -104,7 +109,8 @@ describe("Store", () => {
     });
 
     it("should return an unsubscribe function", () => {
-      const unsubscribe = store.subscribe("count", jest.fn());
+      const mockListener = jest.fn();
+      const unsubscribe = store.subscribe("count", mockListener);
       expect(typeof unsubscribe).toBe("function");
     });
 

@@ -23,6 +23,7 @@ const renderComponent = (
 describe("CardMeal", () => {
   afterEach(() => {
     document.body.innerHTML = "";
+    jest.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -33,14 +34,17 @@ describe("CardMeal", () => {
 
     it("should render an image with the correct src", () => {
       renderComponent({ imgSrc: "https://example.com/img.jpg" });
-      const img = document.querySelector<HTMLImageElement>("img");
-      expect(img).toHaveAttribute("src", "https://example.com/img.jpg");
+      expect(
+        screen.getByRole("img", { name: "American pancakes" })
+      ).toHaveAttribute("src", "https://example.com/img.jpg");
     });
 
     it("should render an image with the meal name as alt text", () => {
       renderComponent({ name: "Pancakes" });
-      const img = document.querySelector<HTMLImageElement>("img");
-      expect(img).toHaveAttribute("alt", "Pancakes");
+      expect(screen.getByRole("img", { name: "Pancakes" })).toHaveAttribute(
+        "alt",
+        "Pancakes"
+      );
     });
 
     it("should render the meal name in an h2 heading", () => {
@@ -86,8 +90,9 @@ describe("CardMeal", () => {
       expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
         "Prawn & egg on toast"
       );
-      const img = document.querySelector<HTMLImageElement>("img");
-      expect(img).toHaveAttribute("alt", "Prawn & egg on toast");
+      expect(
+        screen.getByRole("img", { name: "Prawn & egg on toast" })
+      ).toHaveAttribute("alt", "Prawn & egg on toast");
     });
   });
 });

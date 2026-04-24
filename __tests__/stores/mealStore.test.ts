@@ -12,6 +12,10 @@ describe("MealStore", () => {
     store = new MealStore({ meals: mockMeals, currentFilter: "all" });
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe("initialization", () => {
     it("should initialize with all meals", () => {
       expect(store.get("meals")).toEqual(mockMeals);

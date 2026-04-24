@@ -26,6 +26,7 @@ describe("ButtonFilter", () => {
   afterEach(() => {
     document.body.innerHTML = "";
     mealStore.setCurrentFilter("all");
+    jest.clearAllMocks();
   });
 
   describe("rendering", () => {
@@ -102,7 +103,7 @@ describe("ButtonFilter", () => {
         text: "Breakfast",
       });
       element.cleanup?.();
-      await user.click(element);
+      await user.click(screen.getByRole("button"));
       expect(mealStore.get("currentFilter")).toBe("all");
     });
   });
