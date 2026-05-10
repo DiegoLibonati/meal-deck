@@ -6,14 +6,7 @@ This project was created primarily for **educational and learning purposes**.
 While it is well-structured and could technically be used in production, it is **not intended for commercialization**.  
 The main goal is to explore and demonstrate best practices, patterns, and technologies in software development.
 
-## Getting Started
-
-1. Clone the repository
-2. Navigate to the project folder
-3. Execute: `npm install`
-4. Execute: `npm run dev`
-
-The application will open automatically at `http://localhost:3000`
+With that intent in mind, here is what the project actually does and how it is organized.
 
 ## Description
 
@@ -27,6 +20,8 @@ The application is designed as a single-page experience: fast to load, lightweig
 
 ## Technologies used
 
+These are the core technologies that make the experience above possible:
+
 1. Typescript
 2. TailwindCSS
 3. HTML5
@@ -34,6 +29,8 @@ The application is designed as a single-page experience: fast to load, lightweig
 5. Vite
 
 ## Libraries used
+
+On top of those technologies, the project relies on the following packages. Note that there are **no production dependencies** — everything below is tooling for development, testing, linting, and bundling.
 
 #### Dependencies
 
@@ -68,11 +65,20 @@ No production dependencies - Pure Vanilla TypeScript
 "vite": "^7.1.5"
 ```
 
-## Portfolio Link
+## Getting Started
 
-[`https://www.diegolibonati.com.ar/#/project/meal-deck`](https://www.diegolibonati.com.ar/#/project/meal-deck)
+Now that you know what powers the app, here is how to run it locally:
+
+1. Clone the repository
+2. Navigate to the project folder
+3. Execute: `npm install`
+4. Execute: `npm run dev`
+
+The application will open automatically at `http://localhost:3000`.
 
 ## Testing
+
+With the app running locally, you can also exercise the test suite to validate components, store logic, and page rendering:
 
 1. Navigate to the project folder
 2. Execute: `npm test`
@@ -83,7 +89,9 @@ For coverage report:
 npm run test:coverage
 ```
 
-## Security
+## Security Audit
+
+Beyond functional testing, dependencies should be audited for known vulnerabilities before any release.
 
 ### npm audit
 
@@ -96,3 +104,9 @@ npm audit
 ## Known Issues
 
 None at the moment.
+
+## Portfolio Link
+
+For more details about this and other projects:
+
+[`https://www.diegolibonati.com.ar/#/project/meal-deck`](https://www.diegolibonati.com.ar/#/project/meal-deck)
