@@ -69,6 +69,8 @@ No production dependencies - Pure Vanilla TypeScript
 
 Now that you know what powers the app, here is how to run it locally:
 
+> **Requires Node.js ≥ 22.** Use [nvm](https://github.com/nvm-sh/nvm) and run `nvm use` to switch automatically via the included `.nvmrc`.
+
 1. Clone the repository
 2. Navigate to the project folder
 3. Execute: `npm install`
@@ -88,6 +90,16 @@ For coverage report:
 ```bash
 npm run test:coverage
 ```
+
+## CI/CD
+
+Every push and pull request to `main` runs the following GitHub Actions pipeline:
+
+| Job              | Steps                                      |
+| ---------------- | ------------------------------------------ |
+| **Lint & Audit** | `npm run lint` → `npm run type-check`      |
+| **Testing**      | `npm test` (requires Lint & Audit to pass) |
+| **Build**        | `npm run build` (requires Testing to pass) |
 
 ## Security Audit
 
