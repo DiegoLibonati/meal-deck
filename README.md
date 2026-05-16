@@ -91,15 +91,56 @@ For coverage report:
 npm run test:coverage
 ```
 
-## CI/CD
+## Continuous Integration
 
-Every push and pull request to `main` runs the following GitHub Actions pipeline:
+The repository ships with a **GitHub Actions** pipeline defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml). It runs automatically on every `push` and `pull_request` targeting the `main` branch and is composed of three sequential jobs: each one only starts if the previous one succeeded, so a lint failure short-circuits the run before any tests or builds are attempted.
 
-| Job              | Steps                                      |
-| ---------------- | ------------------------------------------ |
-| **Lint & Audit** | `npm run lint` → `npm run type-check`      |
-| **Testing**      | `npm test` (requires Lint & Audit to pass) |
-| **Build**        | `npm run build` (requires Testing to pass) |
+### Pipeline overview
+
+```
+                ┌─── PR or push to main ───┐
+                ▼                          ▼
+┌──────────────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│   lint-and-audit     │─▶│     testing      │─▶│      build       │
+│ eslint · type-check  │  │  jest (jsdom)    │  │ tsc · vite build │
+└──────────────────────┘  └──────────────────┘  └──────────────────┘
+```
+
+All three jobs run on `ubuntu-latest`, check out the repository with `actions/checkout@v4.2.2`, and use `actions/setup-node@v4` pinned to the Node version declared in [`.nvmrc`](.nvmrc) with the npm cache enabled. Dependencies are installed with `npm ci` for reproducible installs.
+
+### Validation jobs (run on every PR and push to `main`)
+
+1. **`lint-and-audit`** — runs `npm run lint` (ESLint with the TypeScript-ESLint config, which enforces explicit return types and bans `any`) followed by `npm run type-check` (`tsc --noEmit`). This is the first gate: if either command fails the rest of the pipeline is skipped.
+2. **`testing`** — depends on `lint-and-audit`. Runs `npm run test`, which executes the full Jest suite in the `jsdom` environment (`jest --verbose`). Components, store logic and page rendering are all exercised here.
+3. **`build`** — depends on `testing`. Runs `npm run build`, which performs a strict type check against `tsconfig.app.json` and then produces the production bundle with `vite build`. This is the final smoke test that the codebase compiles and bundles cleanly.
+
+### Where the build outputs live
+
+| Output                              | Location                                      |
+| ----------------------------------- | --------------------------------------------- |
+| Validation logs (lint, type, tests) | **Actions** tab on GitHub                     |
+| Production bundle from `build`      | Ephemeral, inside the runner (not uploaded)   |
+| Coverage reports                    | Generated locally via `npm run test:coverage` |
+
+> **Note:** The current pipeline performs validation only — there is no release job, no artifact upload, and no automated deployment. The `build` job acts as a guarantee that `main` is always buildable, not as a publishing step.
+
+### Running the same checks locally
+
+You can reproduce the exact pipeline steps on your machine before pushing:
+
+```bash
+# lint-and-audit
+npm run lint
+npm run type-check
+
+# testing
+npm run test
+
+# build
+npm run build
+```
+
+If you want the full coverage report that the team uses to spot regressions, run `npm run test:coverage` (the 70% threshold is enforced by the Jest config).
 
 ## Security Audit
 
